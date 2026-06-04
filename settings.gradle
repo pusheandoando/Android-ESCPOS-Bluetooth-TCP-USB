@@ -1,0 +1,8 @@
+// settings.gradle
+
+
+
+
+
+include ':androidescpos'
+rootProject.name = 'AndroidESCPOS'
