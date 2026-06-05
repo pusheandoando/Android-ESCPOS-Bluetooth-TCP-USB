@@ -26,6 +26,12 @@ The following open source projects and resources served as a knowledge base and 
 
 
 
+## Sample Output
+<img src="assets/photo_ticket.jpg" alt="Ticket printed using this library" width="400">
+
+
+
+
 ## Android Version
 Minimum supported SDK: 16 (Android 4.1 Jelly Bean).
 
@@ -46,7 +52,7 @@ allprojects {
 **Step 2.** Add the dependency in your app `build.gradle`:
 ```groovy
 dependencies {
-    implementation 'com.github.pusheandoando:Android-ESCPOS-Bluetooth-TCP-USB:1.0'
+    implementation 'com.github.pusheandoando:Android-ESCPOS-Bluetooth-TCP-USB:1.0.0'
 }
 ```
 
@@ -381,3 +387,10 @@ Switch image printing between `ESC *` and `GS v 0` commands.
 
 - `charsetName` — Java charset name (e.g. `windows-1252`)
 - `charsetId` — ESC/POS charset ID for your printer model
+
+
+
+
+
+### Development notes:
+- Library version is defined in 'gradle.properties', in 'LIBRARY_VERSION_NAME'.

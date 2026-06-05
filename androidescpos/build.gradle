@@ -9,17 +9,14 @@ plugins {
     id 'maven-publish'
 }
 
-def libraryVersionCode = 1000000
-def libraryVersionName = "1.0"
-
 android {
     compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 16
         targetSdkVersion 33
-        versionCode libraryVersionCode
-        versionName libraryVersionName
+        versionCode LIBRARY_VERSION_CODE.toInteger()
+        versionName LIBRARY_VERSION_NAME
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles 'consumer-rules.pro'
@@ -53,7 +50,7 @@ afterEvaluate {
             release(MavenPublication) {
                 groupId = 'com.github.pusheandoando'
                 artifactId = 'Android-ESCPOS-Bluetooth-TCP-USB'
-                version = libraryVersionName
+                version = LIBRARY_VERSION_NAME
                 pom {
                     name = 'Android ESC/POS Thermal Printer SDK'
                     description = 'Android library for communicating with ESC/POS thermal printers over Bluetooth, TCP, and USB.'

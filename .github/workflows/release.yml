@@ -1,0 +1,64 @@
+# .github/workflows/release.yml
+
+name: Release
+
+on:
+  push:
+    branches:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Read version from gradle.properties
+        id: read_version
+        run: |
+          VERSION=$(grep '^LIBRARY_VERSION_NAME=' gradle.properties | cut -d'=' -f2 | tr -d '[:space:]')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Verify branch matches version
+        run: |
+          BRANCH="${{ github.ref_name }}"
+          VERSION="v${{ steps.read_version.outputs.version }}"
+          if [ "$BRANCH" != "$VERSION" ]; then
+            echo "Branch name '$BRANCH' does not match LIBRARY_VERSION_NAME '$VERSION' in gradle.properties"
+            exit 1
+          fi
+
+      - name: Check if tag already exists
+        id: check_tag
+        run: |
+          TAG="v${{ steps.read_version.outputs.version }}"
+          if git ls-remote --tags origin "$TAG" | grep -q "$TAG"; then
+            echo "exists=true" >> $GITHUB_OUTPUT
+          else
+            echo "exists=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Set up JDK 11
+        if: steps.check_tag.outputs.exists == 'false'
+        uses: actions/setup-java@v4
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+
+      - name: Grant execute permission for gradlew
+        if: steps.check_tag.outputs.exists == 'false'
+        run: chmod +x gradlew
+
+      - name: Build release
+        if: steps.check_tag.outputs.exists == 'false'
+        run: ./gradlew :androidescpos:assembleRelease
+
+      - name: Create tag and GitHub Release
+        if: steps.check_tag.outputs.exists == 'false'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ steps.read_version.outputs.version }}
+          name: v${{ steps.read_version.outputs.version }}
+          generate_release_notes: true
