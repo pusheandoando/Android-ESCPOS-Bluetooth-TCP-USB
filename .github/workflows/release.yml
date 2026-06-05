@@ -47,13 +47,15 @@ jobs:
           java-version: '11'
           distribution: 'temurin'
 
-      - name: Grant execute permission for gradlew
+      - name: Set up Gradle
         if: steps.check_tag.outputs.exists == 'false'
-        run: chmod +x gradlew
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '7.4'
 
       - name: Build release
         if: steps.check_tag.outputs.exists == 'false'
-        run: ./gradlew :androidescpos:assembleRelease
+        run: gradle :androidescpos:assembleRelease
 
       - name: Create tag and GitHub Release
         if: steps.check_tag.outputs.exists == 'false'
