@@ -52,7 +52,7 @@ allprojects {
 **Step 2.** Add the dependency in your app `build.gradle`:
 ```groovy
 dependencies {
-    implementation 'com.github.pusheandoando:Android-ESCPOS-Bluetooth-TCP-USB:1.0.0'
+    implementation 'com.github.pusheandoando:Android-ESCPOS-Bluetooth-TCP-USB:v1.0.0'
 }
 ```
 
